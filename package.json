@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "NODE_ENV=local next dev",
-    "build": "NODE_ENV=prod next build",
-    "start": "NODE_ENV=prod next start",
+    "local": "NODE_ENV=local next dev",
+    "dev": "NODE_ENV=dev next build",
+    "build": "NODE_ENV=prod next start",
     "lint": "next lint",
     "prettier": "prettier --write ."
   },
