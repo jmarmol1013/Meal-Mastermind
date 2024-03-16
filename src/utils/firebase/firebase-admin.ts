@@ -5,7 +5,7 @@ import { initializeApp, getApps, cert, ServiceAccount } from 'firebase-admin/app
 import { SessionCookieOptions, getAuth } from 'firebase-admin/auth';
 
 const FIREBASE_CREDENTIALS: ServiceAccount = {
-    projectId: process.env.FIREBASE_PROJECT_ID,
+    projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
     privateKey: process.env.FIREBASE_PRIVATE_KEY,
     clientEmail: process.env.FIREBASE_CLIENT_EMAIL,
 };
