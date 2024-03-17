@@ -26,6 +26,5 @@ export const connectMongo = async () => {
         throw e;
     }
 
-    console.log("Database connected");
     return cached.connection;
 }
