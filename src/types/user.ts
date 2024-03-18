@@ -1,5 +1,4 @@
 import { ObjectId } from 'mongoose';
-import { Recipe } from './recipes';
 
 export type User = {
     _id?: ObjectId;
@@ -11,8 +10,8 @@ export type User = {
     type?: UserType;
     cuisines?: Cuisine[];
     allergies?: Allergie[];
-    recipes?: Recipe[];
-    favorities?: Recipe[];
+    recipes?: ObjectId[];
+    favorities?: ObjectId[];
 };
 
 export type Allergie =
