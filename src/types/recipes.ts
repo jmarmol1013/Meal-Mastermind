@@ -10,17 +10,17 @@ export type Recipe = {
     type: string;
     ingredients: Ingredient[];
     steps: string[];
-    nutritionalInfo: nutritionalInfo;
+    nutritionalInfo: NutritionalInfo;
     allergies?: Allergie[];
 };
 
 export type Ingredient = {
     name: string;
     quantity: number;
-    meassure: string;
+    measure: string;
 };
 
-export type nutritionalInfo = {
+export type NutritionalInfo = {
     calories: number;
     protein: number;
     fats: number;
