@@ -11,7 +11,7 @@ export type User = {
     cuisines?: Cuisine[];
     allergies?: Allergie[];
     recipes?: ObjectId[];
-    favorities?: ObjectId[];
+    favorites?: ObjectId[];
 };
 
 export type Allergie =

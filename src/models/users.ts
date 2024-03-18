@@ -67,13 +67,13 @@ const UsersSchema = new Schema<User>(
         recipes: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Recipes',
+                ref: 'recipes',
             },
         ],
-        favorities: [
+        favorites: [
             {
                 type: mongoose.Schema.Types.ObjectId,
-                ref: 'Recipes',
+                ref: 'recipes',
             },
         ],
     },
