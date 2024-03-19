@@ -1,8 +1,10 @@
+import { Recipes } from '@models/recipes';
 import { Users } from '@models/users';
 import { APIResponse } from '@typesApp/api';
 import { Recipe } from '@typesApp/recipes';
 import { isUserAuthenticated } from '@utils/firebase/firebase-admin';
 import { connectMongo } from '@utils/mongo-connection';
+import { ObjectId } from 'mongoose';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest, { params }: { params: { username: string } }) {
@@ -25,7 +27,7 @@ export async function GET(req: NextRequest, { params }: { params: { username: st
         const username = params.username;
 
         if (username) {
-            const user = await Users.findOne({ username: username }).populate('recipes');
+            const user = await Users.findOne({ username: username });
 
             if (!user) {
                 return NextResponse.json<APIResponse<void>>(
@@ -39,7 +41,10 @@ export async function GET(req: NextRequest, { params }: { params: { username: st
                 );
             }
 
-            const recipes: Recipe[] = user.recipes;
+            const recipesId = user.recipes;
+            const recipes: Recipe[] = await Promise.all(
+                recipesId!.map((id: ObjectId) => Recipes.findById(id)),
+            );
 
             if (!recipes || recipes.length == 0) {
                 return NextResponse.json<APIResponse<void>>(
