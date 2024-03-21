@@ -7,7 +7,7 @@ export const signIn = async (email: string, password: string) => {
         const userCreds = await signInWithEmailAndPassword(auth, email, password);
         const idToken = await userCreds.user.getIdToken();
 
-        const response = await fetch('api/auth/sign-in', {
+        const response = await fetch(process.env.API_SIGNIN!, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -31,7 +31,7 @@ export const signUp = async (email: string, password: string) => {
         const userCreds = await createUserWithEmailAndPassword(auth, email, password);
         const idToken = await userCreds.user.getIdToken();
 
-        const response = await fetch('api/auth/sign-up', {
+        const response = await fetch(process.env.API_SIGNUP!, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
