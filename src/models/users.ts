@@ -76,6 +76,11 @@ const UsersSchema = new Schema<User>(
                 ref: 'recipes',
             },
         ],
+        lastUpdateRecipesDate: [
+            {
+                type: Date
+            }
+        ],
     },
     {
         timestamps: true,

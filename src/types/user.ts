@@ -12,6 +12,7 @@ export type User = {
     allergies?: Allergie[];
     recipes?: ObjectId[];
     favorites?: ObjectId[];
+    lastUpdateRecipesDate?: Date;
 };
 
 export type Allergie =
