@@ -1,9 +1,33 @@
-import React from 'react';
+'use client';
+import Link from 'next/link';
+import { useState } from 'react';
+import axios from 'axios';
 
 const LoginForm = () => {
+    const [userName, setUserName] = useState('');
+    const [password, setPassword] = useState('');
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+        console.log(userName, password);
+        try {
+            const response = await axios.post('/api/auth/sign-in', {
+                username: userName,
+                password: password,
+            });
+
+            console.log(response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    };
+
     return (
         <div className="m-auto flex h-screen max-w-xs flex-col justify-center">
-            <form className="mb-4 rounded bg-white px-8 pb-8 pt-6 shadow-md">
+            <form
+                className="mb-4 rounded bg-white px-8 pb-8 pt-6 shadow-md"
+                onSubmit={handleSubmit}
+            >
                 <div className="mb-4">
                     <label
                         className="mb-2 block text-sm font-bold text-gray-700"
@@ -16,6 +40,8 @@ const LoginForm = () => {
                         id="username"
                         type="text"
                         placeholder="Username"
+                        onChange={(e) => setUserName(e.target.value)}
+                        value={userName}
                     />
                 </div>
                 <div className="mb-6">
@@ -30,22 +56,25 @@ const LoginForm = () => {
                         id="password"
                         type="password"
                         placeholder="******************"
+                        onChange={(e) => setPassword(e.target.value)}
+                        value={password}
                     />
                     {/* <p className="text-xs italic text-red-500">Please choose a password.</p> */}
                 </div>
                 <div className="flex items-center justify-between">
                     <button
                         className="focus:shadow-outline rounded bg-blue-500 px-4 py-2 font-bold text-white hover:bg-blue-700 focus:outline-none"
-                        type="button"
+                        type="submit"
                     >
                         Sign In
                     </button>
-                    <a
+                    OR
+                    <Link
                         className="inline-block align-baseline text-sm font-bold text-blue-500 hover:text-blue-800"
-                        href="#"
+                        href={'/register'}
                     >
-                        Forgot Password?
-                    </a>
+                        Sign Up
+                    </Link>
                 </div>
             </form>
             <p className="text-center text-xs text-gray-500">
