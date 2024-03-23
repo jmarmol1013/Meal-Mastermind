@@ -1,10 +1,10 @@
 import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
-
 import { APIResponse } from '@typesApp/api';
 import { isUserAuthenticated } from '@utils/firebase/firebase-admin';
 import { connectMongo } from '@utils/mongo-connection';
 import { Users } from '@models/users';
+import { User } from '@typesApp/user';
 
 export async function GET(request: NextRequest, { params }: { params: { email: string } }) {
     try {
@@ -24,26 +24,28 @@ export async function GET(request: NextRequest, { params }: { params: { email: s
 
         const email = params.email;
         await connectMongo();
-        const userUsername = await Users.findOne({ email: email }, { _id: 0, username: 1 });
-
-        if (!userUsername) {
+        const user: User | null = await Users.findOne({ email: email });
+        if (!user) {
             return NextResponse.json<APIResponse<void>>({
                 statusCode: 404,
                 message: 'User found.',
             });
         }
 
-        const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
+        if (cookies().get('username') == undefined || cookies().get('username')?.value == '') {
+            const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
 
-        cookies().set('username', userUsername, {
-            maxAge: expiresIn,
-            httpOnly: true,
-            secure: true,
-        });
+            cookies().set('username', user.username, {
+                maxAge: expiresIn,
+                httpOnly: true,
+                secure: true,
+            });
+        }
 
-        return NextResponse.json<APIResponse<void>>({
+        return NextResponse.json<APIResponse<User>>({
             statusCode: 200,
-            message: 'Username return sucessfully.',
+            message: 'User return sucessfully.',
+            data: user,
         });
     } catch (error) {
         return NextResponse.json({ message: error }, { status: 400 });
