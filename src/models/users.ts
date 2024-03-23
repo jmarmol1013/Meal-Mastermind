@@ -76,11 +76,9 @@ const UsersSchema = new Schema<User>(
                 ref: 'recipes',
             },
         ],
-        lastUpdateRecipesDate: [
-            {
-                type: Date
-            }
-        ],
+        lastUpdateRecipesDate: {
+            type: Date,
+        },
     },
     {
         timestamps: true,
