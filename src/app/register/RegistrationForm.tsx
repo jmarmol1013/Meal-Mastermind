@@ -1,8 +1,10 @@
 'use client';
 import Link from 'next/link';
 import { useState } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { signUp } from '@services/auth';
+import { useRouter } from 'next/navigation';
+import { set } from 'mongoose';
 
 interface RegistrationData {
     firstName: string;
@@ -22,24 +24,36 @@ const RegistrationForm = () => {
     };
 
     const [user, setUser] = useState<RegistrationData>(formData);
+    const [isSigningUp, setIsSigningUp] = useState(false);
+    const [error, setError] = useState('');
+    const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        const response = await signUp(user.email, user.password);
-
-        if (response)
-            await axios.post('http://localhost:3000/api/registration/register', {
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-                username: user.username,
-            });
-        else console.error('Error signing up');
+        try {
+            setIsSigningUp(true);
+            setError('');
+            const response = await signUp(user.email, user.password);
+            if (response) {
+                await axios.post('http://localhost:3000/api/registration/registerd', {
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    email: user.email,
+                    username: user.username,
+                });
+                router.push('/login');
+            } else throw new Error('Failed to sign you up. Please try again.');
+        } catch (e) {
+            setIsSigningUp(false);
+            setError('Failed to sign you up. Please try again.');
+        }
     };
 
     return (
         <div className="m-auto flex h-screen max-w-xs flex-col justify-center">
+            {isSigningUp && <h1 className="text-center text-3xl font-bold">Signing You Up....</h1>}
+            {error && <h1 className="text-center text-3xl font-bold text-red-500">{error}</h1>}
             <form
                 className="mb-4 rounded bg-white px-8 pb-8 pt-6 shadow-md"
                 onSubmit={handleSubmit}
