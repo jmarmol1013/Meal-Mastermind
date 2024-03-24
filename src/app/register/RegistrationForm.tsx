@@ -25,21 +25,17 @@ const RegistrationForm = () => {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(user);
 
         const response = await signUp(user.email, user.password);
-        console.log('auth res: ', response);
 
-        if (response) {
-            const res = await axios.post('http://localhost:3000/api/registration/register', {
+        if (response)
+            await axios.post('http://localhost:3000/api/registration/register', {
                 firstName: user.firstName,
                 lastName: user.lastName,
                 email: user.email,
                 username: user.username,
             });
-
-            console.log(res);
-        } else console.error('Error signing up');
+        else console.error('Error signing up');
     };
 
     return (

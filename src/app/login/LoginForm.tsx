@@ -1,25 +1,18 @@
 'use client';
+import { signIn } from '@services/auth';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import axios from 'axios';
 
 const LoginForm = () => {
-    const [userName, setUserName] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        console.log(userName, password);
-        try {
-            const response = await axios.post('/api/auth/sign-in', {
-                username: userName,
-                password: password,
-            });
-
-            console.log(response.data);
-        } catch (error) {
-            console.error(error);
-        }
+        const response = await signIn(email, password);
+        if (response) router.push('/');
     };
 
     return (
@@ -29,19 +22,16 @@ const LoginForm = () => {
                 onSubmit={handleSubmit}
             >
                 <div className="mb-4">
-                    <label
-                        className="mb-2 block text-sm font-bold text-gray-700"
-                        htmlFor="username"
-                    >
-                        Username
+                    <label className="mb-2 block text-sm font-bold text-gray-700" htmlFor="email">
+                        Email
                     </label>
                     <input
                         className="focus:shadow-outline w-full appearance-none rounded border px-3 py-2 leading-tight text-gray-700 shadow focus:outline-none"
-                        id="username"
-                        type="text"
-                        placeholder="Username"
-                        onChange={(e) => setUserName(e.target.value)}
-                        value={userName}
+                        id="email"
+                        type="email"
+                        placeholder="Email"
+                        onChange={(e) => setEmail(e.target.value)}
+                        value={email}
                     />
                 </div>
                 <div className="mb-6">
