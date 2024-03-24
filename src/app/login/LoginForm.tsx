@@ -7,16 +7,28 @@ import { useState } from 'react';
 const LoginForm = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState('');
+    const [isSigningIn, setIsSigningIn] = useState(false);
     const router = useRouter();
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const response = await signIn(email, password);
-        if (response) router.push('/');
+        try {
+            setIsSigningIn(true);
+            setError('');
+            const response = await signIn(email, password);
+            if (response) router.push('/');
+            else throw new Error('Failed to sign you in. Please try again.');
+        } catch (e) {
+            setIsSigningIn(false);
+            setError('Failed to sign you in. Please try again.');
+        }
     };
 
     return (
         <div className="m-auto flex h-screen max-w-xs flex-col justify-center">
+            {isSigningIn && <h1 className="text-center text-3xl font-bold">Signing You In....</h1>}
+            {error && <h1 className="text-center text-3xl font-bold text-red-500">{error}</h1>}
             <form
                 className="mb-4 rounded bg-white px-8 pb-8 pt-6 shadow-md"
                 onSubmit={handleSubmit}

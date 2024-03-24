@@ -36,7 +36,7 @@ const RegistrationForm = () => {
             setError('');
             const response = await signUp(user.email, user.password);
             if (response) {
-                await axios.post('http://localhost:3000/api/registration/registerd', {
+                await axios.post('http://localhost:3000/api/registration/register', {
                     firstName: user.firstName,
                     lastName: user.lastName,
                     email: user.email,
