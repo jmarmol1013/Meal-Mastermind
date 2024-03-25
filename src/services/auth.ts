@@ -7,7 +7,7 @@ export const signIn = async (email: string, password: string) => {
         const userCreds = await signInWithEmailAndPassword(auth, email, password);
         const idToken = await userCreds.user.getIdToken();
 
-        const response = await fetch(process.env.API_SIGNIN!, {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_SIGNIN!, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -16,7 +16,6 @@ export const signIn = async (email: string, password: string) => {
         });
 
         const resBody = (await response.json()) as unknown as APIResponse<string>;
-
         if (response.ok && resBody.statusCode === 200) {
             return true;
         } else return false;
@@ -30,15 +29,17 @@ export const signUp = async (email: string, password: string) => {
     try {
         const userCreds = await createUserWithEmailAndPassword(auth, email, password);
         const idToken = await userCreds.user.getIdToken();
-
-        const response = await fetch(process.env.API_SIGNUP!, {
+        console.log(userCreds);
+        console.log('auth', auth);
+        console.log(process.env.NEXT_PUBLIC_API_SIGNUP!);
+        const response = await fetch(process.env.NEXT_PUBLIC_API_SIGNUP!, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({ idToken }),
         });
-
+        console.log('response: ', response);
         const resBody = (await response.json()) as unknown as APIResponse<string>;
 
         if (response.ok && resBody.statusCode == 200) {
