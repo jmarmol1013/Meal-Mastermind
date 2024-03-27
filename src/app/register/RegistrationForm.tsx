@@ -12,6 +12,7 @@ interface RegistrationData {
     email: string;
     username: string;
     password: string;
+    role: 'user' | 'admin';
 }
 
 const RegistrationForm = () => {
@@ -21,6 +22,7 @@ const RegistrationForm = () => {
         email: '',
         username: '',
         password: '',
+        role: 'user',
     };
 
     const [user, setUser] = useState<RegistrationData>(formData);
@@ -41,6 +43,7 @@ const RegistrationForm = () => {
                     lastName: user.lastName,
                     email: user.email,
                     username: user.username,
+                    role: user.role
                 });
                 router.push('/login');
             } else throw new Error('Failed to sign you up. Please try again.');

@@ -13,6 +13,7 @@ export type User = {
     recipes?: ObjectId[];
     favorites?: ObjectId[];
     lastUpdateRecipesDate?: Date;
+    role: 'user' | 'admin';
 };
 
 export type Allergie =
