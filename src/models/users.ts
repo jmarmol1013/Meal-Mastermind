@@ -79,6 +79,11 @@ const UsersSchema = new Schema<User>(
         lastUpdateRecipesDate: {
             type: Date,
         },
+        role: {
+            type: String,
+            enum: ['user', 'admin'],
+            default: 'user'
+        }
     },
     {
         timestamps: true,
