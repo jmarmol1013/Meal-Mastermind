@@ -14,6 +14,7 @@ export async function GET() {
         );
 
     cookies().delete('__session');
+    cookies().delete('username');
 
     await revokeAllSessions(sessionCookie);
 
