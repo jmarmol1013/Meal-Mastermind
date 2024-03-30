@@ -18,7 +18,6 @@ export const registration = async (user: RegistrationFormDto) => {
             return true;
         } else return false;
     } catch (error) {
-        console.error('Error signing up with email and password', error);
         return false;
     }
 };
@@ -32,7 +31,21 @@ export const validateUser = async (email: string) => {
             return true;
         } else return false;
     } catch (error) {
-        console.error('Error signing up with email and password', error);
+        return false;
+    }
+};
+
+export const validateUserPreferences = async (username: string) => {
+    try {
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_API_VALIDATE_USER_PREFERENCES!}/${username}`,
+        );
+        const resBody = (await response.json()) as unknown as APIResponse<Boolean>;
+
+        if (response.ok && resBody.statusCode == 200) {
+            return resBody.data;
+        } else return false;
+    } catch (error) {
         return false;
     }
 };
