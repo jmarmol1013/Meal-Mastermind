@@ -29,7 +29,7 @@ const UsersSchema = new Schema<User>(
         },
         type: {
             type: String,
-            enum: ['Normal', 'Loss-weight', 'Gain-weight', 'Vegan', 'Family'],
+            enum: ['Normal', 'Loss-weight', 'Gain-weight', 'Vegan'],
         },
         cuisines: [
             {
@@ -82,8 +82,8 @@ const UsersSchema = new Schema<User>(
         role: {
             type: String,
             enum: ['user', 'admin'],
-            default: 'user'
-        }
+            default: 'user',
+        },
     },
     {
         timestamps: true,
