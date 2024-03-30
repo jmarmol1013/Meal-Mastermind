@@ -39,4 +39,4 @@ export type Cuisine =
     | 'French'
     | 'Greek';
 
-export type UserType = 'Normal' | 'Loss-weight' | 'Gain-weight' | 'Vegan' | 'Family';
+export type UserType = 'Normal' | 'Loss-weight' | 'Gain-weight' | 'Vegan';
