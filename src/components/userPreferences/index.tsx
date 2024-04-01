@@ -4,11 +4,14 @@ import React, { useState } from 'react';
 import { StepOne } from './stepOne';
 import { Cuisine, User } from '@typesApp/user';
 import { StepTwo } from '@components/userPreferences/stepTwo';
+import { StepThree } from './stepThree';
+import { Recipe } from '@typesApp/recipes';
 
 export const UserPreferences = () => {
     const [step, setStep] = useState<number>(1);
     const [userType, setUserType] = useState<User['type']>();
     const [cuisines, setCuisines] = useState<User['cuisines']>([]);
+    const [recipes, setRecipes] = useState<Recipe['_id'][]>([]);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const nextStep = () => {
@@ -19,6 +22,11 @@ export const UserPreferences = () => {
 
         if (step == 2 && cuisines?.length == 0) {
             setErrorMessage('Please select at least one cuisine');
+            return;
+        } else setErrorMessage(null);
+
+        if (step == 3 && recipes?.length < 5) {
+            setErrorMessage('Please select at least five cuisine');
             return;
         } else setErrorMessage(null);
 
@@ -45,6 +53,18 @@ export const UserPreferences = () => {
         });
     };
 
+    const addRecipe = (recipeId: Recipe['_id']) => {
+        setRecipes((prevRecipe = []) => {
+            const cuisineExists = prevRecipe.includes(recipeId);
+
+            if (cuisineExists) {
+                return prevRecipe.filter((r) => r !== recipeId);
+            } else {
+                return [...prevRecipe, recipeId];
+            }
+        });
+    };
+
     return (
         <>
             <div
@@ -59,8 +79,15 @@ export const UserPreferences = () => {
                     <StepOne currentType={userType} setUserType={changeUserType} />
                 ) : step === 2 ? (
                     <StepTwo cuisines={cuisines} addCuisine={addCuisine} />
+                ) : step === 3 ? (
+                    <StepThree
+                        userType={userType}
+                        favRecipes={recipes}
+                        cuisines={cuisines}
+                        addRecipe={addRecipe}
+                    />
                 ) : null}
-                <div className="mt-16 flex justify-center ">
+                <div className="mt-10 flex justify-center md:mt-16 ">
                     {step > 1 && (
                         <button
                             className="mx-4 rounded-md border-2 border-primary px-4 py-2 text-primary transition-all duration-200 ease-out hover:bg-primary hover:text-white"
