@@ -10,13 +10,15 @@ export default async function UserPreferencesPage() {
     if (!currentUser) redirect('/login');
 
     const username = cookies().get('username')?.value;
+    if (!username) redirect('/login');
+
     const userHasPreferences = await validateUserPreferences(username!);
     if (userHasPreferences) redirect('/dashboard');
 
     return (
         <div className=" m-auto  flex h-screen flex-row items-center justify-center bg-sky-600">
             <div className="h-[90%] w-[95%] rounded-md bg-white shadow-md md:h-[70%] md:w-[70%]">
-                <UserPreferences />
+                <UserPreferences username={username!} />
             </div>
         </div>
     );
