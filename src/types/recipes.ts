@@ -2,7 +2,7 @@ import { ObjectId } from 'mongoose';
 import { Allergie } from './user';
 
 export type Recipe = {
-    id: ObjectId;
+    _id: ObjectId;
     title: string;
     keywords: string[];
     cuisine: string;

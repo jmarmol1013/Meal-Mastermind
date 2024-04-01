@@ -15,7 +15,7 @@ export default async function UserPreferencesPage() {
 
     return (
         <div className=" m-auto  flex h-screen flex-row items-center justify-center bg-sky-600">
-            <div className="h-[90%] w-[90%] rounded-md bg-white shadow-md md:h-[70%] md:w-[70%]">
+            <div className="h-[90%] w-[95%] rounded-md bg-white shadow-md md:h-[70%] md:w-[70%]">
                 <UserPreferences />
             </div>
         </div>
