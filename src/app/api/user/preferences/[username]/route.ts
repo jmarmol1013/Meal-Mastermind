@@ -26,7 +26,7 @@ export async function PUT(req: NextRequest, { params }: { params: { username: st
         const username = params.username;
         const updateFields: UserPreferences = await req.json();
 
-        if (updateFields.type || updateFields.cuisines || updateFields.favorities) {
+        if (updateFields.type || updateFields.cuisines || updateFields.favorites) {
             const updatedUser = await Users.findOneAndUpdate(
                 { username: username },
                 { $set: { ...updateFields, isRegister: true } },
