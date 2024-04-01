@@ -2,16 +2,25 @@
 
 import React, { useState } from 'react';
 import { StepOne } from './stepOne';
-import { Cuisine, User } from '@typesApp/user';
+import { Allergie, Cuisine, User } from '@typesApp/user';
 import { StepTwo } from '@components/userPreferences/stepTwo';
 import { StepThree } from './stepThree';
 import { Recipe } from '@typesApp/recipes';
+import { StepFour } from './stepFour';
+import { updatePreferences } from '@services/userPreferences';
+import { useRouter } from 'next/navigation';
 
-export const UserPreferences = () => {
+type Props = {
+    username: string;
+};
+
+export const UserPreferences: React.FC<Props> = ({ username }) => {
+    const router = useRouter();
     const [step, setStep] = useState<number>(1);
     const [userType, setUserType] = useState<User['type']>();
     const [cuisines, setCuisines] = useState<User['cuisines']>([]);
     const [recipes, setRecipes] = useState<Recipe['_id'][]>([]);
+    const [allergies, setAllergies] = useState<User['allergies']>([]);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
     const nextStep = () => {
@@ -65,6 +74,36 @@ export const UserPreferences = () => {
         });
     };
 
+    const addAllergie = (allergie: Allergie) => {
+        setAllergies((prevAllergies = []) => {
+            const cuisineExists = prevAllergies.includes(allergie);
+
+            if (cuisineExists) {
+                return prevAllergies.filter((a) => a !== allergie);
+            } else {
+                return [...prevAllergies, allergie];
+            }
+        });
+    };
+
+    const setPreferences = async () => {
+        const sentPreferences = await updatePreferences(
+            username!,
+            userType,
+            cuisines,
+            recipes,
+            allergies,
+        );
+
+        if (sentPreferences) {
+            setErrorMessage(null);
+            router.push('/dashboard');
+            return;
+        }
+
+        setErrorMessage('Error updating your preferences :( Please try again');
+    };
+
     return (
         <>
             <div
@@ -86,6 +125,8 @@ export const UserPreferences = () => {
                         cuisines={cuisines}
                         addRecipe={addRecipe}
                     />
+                ) : step === 4 ? (
+                    <StepFour currentAllergies={allergies} addAllergie={addAllergie} />
                 ) : null}
                 <div className="mt-10 flex justify-center md:mt-16 ">
                     {step > 1 && (
@@ -96,12 +137,21 @@ export const UserPreferences = () => {
                             Back
                         </button>
                     )}
-                    <button
-                        className="mx-4 rounded-md border-2 border-secondary px-4 py-2 text-primary transition-all duration-200 ease-out hover:bg-secondary hover:text-white"
-                        onClick={() => nextStep()}
-                    >
-                        Next
-                    </button>
+                    {step < 4 ? (
+                        <button
+                            className="mx-4 rounded-md border-2 border-secondary px-4 py-2 text-primary transition-all duration-200 ease-out hover:bg-secondary hover:text-white"
+                            onClick={() => nextStep()}
+                        >
+                            Next
+                        </button>
+                    ) : (
+                        <button
+                            className="mx-4 rounded-md border-2 border-secondary px-4 py-2 text-primary transition-all duration-200 ease-out hover:bg-secondary hover:text-white"
+                            onClick={() => setPreferences()}
+                        >
+                            Done
+                        </button>
+                    )}
                 </div>
                 {errorMessage && (
                     <div className="mx-auto mt-4 justify-center text-center">
