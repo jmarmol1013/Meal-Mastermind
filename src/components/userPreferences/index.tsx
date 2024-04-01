@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { StepOne } from './stepOne';
 import { Cuisine, User } from '@typesApp/user';
-import { StepTwo } from '@components/stepTwo';
+import { StepTwo } from '@components/userPreferences/stepTwo';
 
 export const UserPreferences = () => {
     const [step, setStep] = useState<number>(1);
