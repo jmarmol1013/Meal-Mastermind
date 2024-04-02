@@ -56,3 +56,20 @@ export const updatePreferences = async (
         return null;
     }
 };
+
+export const updateRecipes = async (username: string) => {
+    try {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_API_UPDATE_RECIPES!}/${username}`);
+
+        const resBody = (await response.json()) as unknown as APIResponse<User>;
+
+        if (response.ok && resBody.statusCode === 200 && resBody.data) {
+            return true;
+        }
+
+        return false;
+    } catch (error) {
+        console.error('Error getting profile information', error);
+        return null;
+    }
+};

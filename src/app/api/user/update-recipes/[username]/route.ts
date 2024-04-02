@@ -1,12 +1,12 @@
+import { Recipes } from '@models/recipes';
 import { Users } from '@models/users';
 import { APIResponse } from '@typesApp/api';
 import { User } from '@typesApp/user';
 import { isUserAuthenticated } from '@utils/firebase/firebase-admin';
 import { connectMongo } from '@utils/mongo-connection';
-import { ObjectId } from 'mongoose';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function PUT(req: NextRequest, { params }: { params: { username: string } }) {
+export async function GET(req: NextRequest, { params }: { params: { username: string } }) {
     try {
         const isAuth = await isUserAuthenticated();
 
@@ -21,9 +21,6 @@ export async function PUT(req: NextRequest, { params }: { params: { username: st
                 },
             );
         }
-
-        const body = (await req.json()) as { recipesToUpdate: string[] };
-        const recipesToUpdate = body.recipesToUpdate;
 
         await connectMongo();
         const username = params.username;
@@ -40,22 +37,12 @@ export async function PUT(req: NextRequest, { params }: { params: { username: st
             );
         }
 
-        // Call AI API to get recipes
-        // const recipes: Recipe["_id"][] = getNewRecipes(username, recipesToUpdate);
-
-        // if (!recipes) {
-        //     return NextResponse.json<APIResponse<void>>(
-        //         {
-        //             statusCode: 404,
-        //             message: 'Error getting recipes from the model.',
-        //         },
-        //         {
-        //             status: 404,
-        //         },
-        //     );
-        // }
-
         const user: User | null = await Users.findOne({ username: username });
+        const recipesTitlesJson = await Recipes.find(
+            { _id: { $in: user?.favorites } },
+            { _id: 0, title: 1 },
+        );
+        const recipesTitles: String[] = recipesTitlesJson.map((recipe) => recipe.title);
 
         if (!user) {
             return NextResponse.json<APIResponse<void>>(
@@ -69,9 +56,35 @@ export async function PUT(req: NextRequest, { params }: { params: { username: st
             );
         }
 
-        const newRecipes = user.recipes?.slice(recipesToUpdate.length);
-        recipesToUpdate.forEach((recipe) => newRecipes?.push(recipe as unknown as ObjectId));
+        //Call AI API to get recipes
+        const fetchNewRecipes = await fetch(`${process.env.NEXT_PUBLIC_API_GET_SUGGEST_RECIPES!}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                type: user.type,
+                favorite_recipes: recipesTitles,
+                allergens: user.allergies,
+            }),
+        });
 
+        const resBody = await fetchNewRecipes.json();
+        const newRecipesTitle: String[] = resBody.recipes;
+
+        if (!newRecipesTitle) {
+            return NextResponse.json<APIResponse<void>>(
+                {
+                    statusCode: 404,
+                    message: 'Error getting recipes from the model.',
+                },
+                {
+                    status: 404,
+                },
+            );
+        }
+
+        const newRecipes = await Recipes.find({ title: { $in: newRecipesTitle } });
         const updateUser = await Users.findOneAndUpdate(
             { username: username },
             { $set: { recipes: newRecipes } },
