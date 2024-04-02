@@ -7,7 +7,7 @@ import { StepTwo } from '@components/userPreferences/stepTwo';
 import { StepThree } from './stepThree';
 import { Recipe } from '@typesApp/recipes';
 import { StepFour } from './stepFour';
-import { updatePreferences } from '@services/userPreferences';
+import { updatePreferences, updateRecipes } from '@services/userPreferences';
 import { useRouter } from 'next/navigation';
 
 type Props = {
@@ -22,6 +22,7 @@ export const UserPreferences: React.FC<Props> = ({ username }) => {
     const [recipes, setRecipes] = useState<Recipe['_id'][]>([]);
     const [allergies, setAllergies] = useState<User['allergies']>([]);
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>();
 
     const nextStep = () => {
         if (step == 1 && userType == null) {
@@ -87,6 +88,8 @@ export const UserPreferences: React.FC<Props> = ({ username }) => {
     };
 
     const setPreferences = async () => {
+        setLoading(true);
+
         const sentPreferences = await updatePreferences(
             username!,
             userType,
@@ -95,7 +98,10 @@ export const UserPreferences: React.FC<Props> = ({ username }) => {
             allergies,
         );
 
-        if (sentPreferences) {
+        const recipesUpdated = await updateRecipes(username);
+
+        setLoading(false);
+        if (sentPreferences && recipesUpdated) {
             setErrorMessage(null);
             router.push('/dashboard');
             return;
@@ -153,6 +159,11 @@ export const UserPreferences: React.FC<Props> = ({ username }) => {
                         </button>
                     )}
                 </div>
+                {loading && (
+                    <div className="mx-auto mt-4 justify-center text-center">
+                        <span className="text-primary transition ease-in">Loading...</span>
+                    </div>
+                )}
                 {errorMessage && (
                     <div className="mx-auto mt-4 justify-center text-center">
                         <span className="text-red-700 transition ease-in">{errorMessage}</span>
