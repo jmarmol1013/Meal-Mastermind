@@ -8,7 +8,8 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest, { params }: { params: { username: string } }) {
     try {
-        const isAuth = await isUserAuthenticated();
+        const session = req.headers.get('session');
+        const isAuth = await isUserAuthenticated(session!);
 
         if (!isAuth) {
             return NextResponse.json<APIResponse<void>>(

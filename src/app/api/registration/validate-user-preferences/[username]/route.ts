@@ -5,9 +5,10 @@ import { isUserAuthenticated } from '@utils/firebase/firebase-admin';
 import { connectMongo } from '@utils/mongo-connection';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(_: NextRequest, { params }: { params: { username: string } }) {
+export async function GET(req: NextRequest, { params }: { params: { username: string } }) {
     try {
-        const isAuth = await isUserAuthenticated();
+        const session = req.headers.get('session');
+        const isAuth = await isUserAuthenticated(session!);
 
         if (!isAuth) {
             return NextResponse.json<APIResponse<User>>(

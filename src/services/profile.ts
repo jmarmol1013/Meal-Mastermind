@@ -1,5 +1,6 @@
 import { APIResponse } from '@typesApp/api';
 import { User } from '@typesApp/user';
+import { serverSideFetchGet } from './serverSide';
 //import { numberRecipesToUpdate, validateUpdateDate } from '@utils/validateDate';
 
 export const getProfile = async (email: string) => {
@@ -37,5 +38,25 @@ export const getProfile = async (email: string) => {
     } catch (error) {
         console.error('Error signing in with email and password', error);
         return null;
+    }
+};
+
+export const updateRecipes = async (username: string) => {
+    try {
+        const response = await serverSideFetchGet(
+            `${process.env.NEXT_PUBLIC_API_UPDATE_RECIPES!}/${username}`,
+            'no-cache',
+        );
+        if (!response) throw 'Error';
+
+        const resBody = (await response.json()) as unknown as APIResponse<User>;
+
+        if (response.ok && resBody.statusCode === 200 && resBody.data) {
+            return true;
+        }
+
+        return false;
+    } catch (error) {
+        return false;
     }
 };

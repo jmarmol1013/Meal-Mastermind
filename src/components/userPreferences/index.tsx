@@ -7,7 +7,7 @@ import { StepTwo } from '@components/userPreferences/stepTwo';
 import { StepThree } from './stepThree';
 import { Recipe } from '@typesApp/recipes';
 import { StepFour } from './stepFour';
-import { updatePreferences, updateRecipes } from '@services/userPreferences';
+import { updatePreferences } from '@services/userPreferences';
 import { useRouter } from 'next/navigation';
 
 type Props = {
@@ -98,10 +98,8 @@ export const UserPreferences: React.FC<Props> = ({ username }) => {
             allergies,
         );
 
-        const recipesUpdated = await updateRecipes(username);
-
         setLoading(false);
-        if (sentPreferences && recipesUpdated) {
+        if (sentPreferences) {
             setErrorMessage(null);
             router.push('/dashboard');
             return;
