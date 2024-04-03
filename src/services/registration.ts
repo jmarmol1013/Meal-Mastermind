@@ -1,6 +1,7 @@
 import { RegistrationFormDto } from '@/app/(auth)/registration/RegistrationForm';
 import { APIResponse } from '@typesApp/api';
 import { User } from '@typesApp/user';
+import { serverSideFetchGet } from './serverSide';
 
 export const registration = async (user: RegistrationFormDto) => {
     try {
@@ -37,9 +38,12 @@ export const validateUser = async (email: string) => {
 
 export const validateUserPreferences = async (username: string) => {
     try {
-        const response = await fetch(
+        const response = await serverSideFetchGet(
             `${process.env.NEXT_PUBLIC_API_VALIDATE_USER_PREFERENCES!}/${username}`,
+            'default',
         );
+        if (!response) throw 'Error';
+
         const resBody = (await response.json()) as unknown as APIResponse<Boolean>;
 
         if (response.ok && resBody.statusCode == 200) {
