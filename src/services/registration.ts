@@ -36,9 +36,10 @@ export const validateUser = async (email: string) => {
     }
 };
 
-export const validateUserPreferences = async (username: string) => {
+export const validateUserPreferences = async (username: string, session: string) => {
     try {
         const response = await serverSideFetchGet(
+            session,
             `${process.env.NEXT_PUBLIC_API_VALIDATE_USER_PREFERENCES!}/${username}`,
             'default',
         );
