@@ -1,16 +1,12 @@
 /* eslint-disable no-undef */
-import { cookies } from 'next/headers';
-
 export const serverSideFetchPost = async (
+    session: string,
     url: string,
     method: string,
     bodyData: any,
     cache: RequestCache,
 ) => {
     try {
-        const session = cookies().get('__session')?.value;
-        if (!session) throw 'No session';
-
         return await fetch(url, {
             method: method,
             headers: {
@@ -24,11 +20,8 @@ export const serverSideFetchPost = async (
     }
 };
 
-export const serverSideFetchGet = async (url: string, cache: RequestCache) => {
+export const serverSideFetchGet = async (session: string, url: string, cache: RequestCache) => {
     try {
-        const session = cookies().get('__session')?.value;
-        if (!session) throw 'No session';
-
         return await fetch(url, {
             headers: {
                 session: session,
