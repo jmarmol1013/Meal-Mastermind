@@ -1,4 +1,3 @@
-import { cookies } from 'next/headers';
 import { NextRequest, NextResponse } from 'next/server';
 import { APIResponse } from '@typesApp/api';
 import { isUserAuthenticated } from '@utils/firebase/firebase-admin';
@@ -6,9 +5,10 @@ import { connectMongo } from '@utils/mongo-connection';
 import { Users } from '@models/users';
 import { User } from '@typesApp/user';
 
-export async function GET(request: NextRequest, { params }: { params: { email: string } }) {
+export async function GET(req: NextRequest, { params }: { params: { username: string } }) {
     try {
-        const isAuth = await isUserAuthenticated();
+        const session = req.headers.get('session');
+        const isAuth = await isUserAuthenticated(session!);
 
         if (!isAuth) {
             return NextResponse.json<APIResponse<void>>(
@@ -22,23 +22,13 @@ export async function GET(request: NextRequest, { params }: { params: { email: s
             );
         }
 
-        const email = params.email;
+        const username = params.username;
         await connectMongo();
-        const user: User | null = await Users.findOne({ email: email });
+        const user: User | null = await Users.findOne({ username: username });
         if (!user) {
             return NextResponse.json<APIResponse<void>>({
                 statusCode: 404,
                 message: 'User found.',
-            });
-        }
-
-        if (cookies().get('username') == undefined || cookies().get('username')?.value == '') {
-            const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
-
-            cookies().set('username', user.username, {
-                maxAge: expiresIn,
-                httpOnly: true,
-                secure: true,
             });
         }
 
