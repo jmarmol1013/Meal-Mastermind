@@ -9,10 +9,11 @@ export default async function UserPreferencesPage() {
     const currentUser = await getCurrentUser();
     if (!currentUser) redirect('/login');
 
+    const session = cookies().get('__session')?.value;
     const username = cookies().get('username')?.value;
-    if (!username) redirect('/login');
+    if (!username || !session) redirect('/login');
 
-    const userHasPreferences = await validateUserPreferences(username!);
+    const userHasPreferences = await validateUserPreferences(username, session);
     if (userHasPreferences) redirect('/dashboard');
 
     return (
