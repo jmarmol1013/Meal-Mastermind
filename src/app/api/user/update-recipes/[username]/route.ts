@@ -4,6 +4,7 @@ import { APIResponse } from '@typesApp/api';
 import { User } from '@typesApp/user';
 import { isUserAuthenticated } from '@utils/firebase/firebase-admin';
 import { connectMongo } from '@utils/mongo-connection';
+import { shuffleArray } from '@utils/shuffleArray';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(req: NextRequest, { params }: { params: { username: string } }) {
@@ -86,9 +87,10 @@ export async function GET(req: NextRequest, { params }: { params: { username: st
         }
 
         const newRecipes = await Recipes.find({ title: { $in: newRecipesTitle } });
+        shuffleArray(newRecipes);
         const updateUser = await Users.findOneAndUpdate(
             { username: username },
-            { $set: { recipes: newRecipes } },
+            { $set: { recipes: newRecipes }, lastUpdateRecipesDate: new Date() },
             { new: true },
         );
 
