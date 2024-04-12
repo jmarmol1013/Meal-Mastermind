@@ -52,7 +52,7 @@ export const signOut = async () => {
     try {
         await auth.signOut();
 
-        const response = await fetch('/api/auth/sign-out', {
+        const response = await fetch(process.env.NEXT_PUBLIC_API_SIGN_OUT!, {
             headers: {
                 'Content-Type': 'application/json',
             },
