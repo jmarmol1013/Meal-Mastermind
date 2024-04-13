@@ -16,7 +16,7 @@ export default async function DashboardPage() {
 
     return (
         <div className="w-full">
-            <FavoritesComponent username={username} favoritesRecipes={favoritesRecipes}/>
+            <FavoritesComponent username={username} favoritesRecipes={favoritesRecipes} />
         </div>
     );
 }

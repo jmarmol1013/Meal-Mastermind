@@ -29,7 +29,7 @@ export const RecipeContainer: React.FC<Props> = ({ username, recipe, favorites }
 
     const handlerFavorite = async (e: React.MouseEvent<SVGElement>) => {
         e.stopPropagation();
-        
+
         const newStatus = !isFavorite;
         setIsFavorite(newStatus);
 
@@ -45,7 +45,7 @@ export const RecipeContainer: React.FC<Props> = ({ username, recipe, favorites }
 
     return (
         <div
-            className="mt-12 justify-center overflow-auto rounded-md shadow-md hover:cursor-pointer mx-4 lg:w-[40%]"
+            className="mx-4 mt-12 justify-center overflow-auto rounded-md shadow-md hover:cursor-pointer lg:w-[40%]"
             onClick={openModal}
         >
             <div className="flex flex-col">

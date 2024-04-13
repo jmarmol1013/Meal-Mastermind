@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import { RecipeContainer } from '@components/Dashboard/Recipes/RecipeContainer';
 import { Recipe } from '@typesApp/recipes';
@@ -9,8 +9,8 @@ type Props = {
     favoritesRecipes: Recipe[];
 };
 
-export const FavoritesComponent:React.FC<Props> = ({username, favoritesRecipes}) => {
-    const favoritesId = favoritesRecipes.map(recipe => recipe._id);
+export const FavoritesComponent: React.FC<Props> = ({ username, favoritesRecipes }) => {
+    const favoritesId = favoritesRecipes.map((recipe) => recipe._id);
 
     return (
         <div className="m-6 lg:m-24">
@@ -24,14 +24,17 @@ export const FavoritesComponent:React.FC<Props> = ({username, favoritesRecipes})
                 recommendations you&apos;ll receive. So go ahead, explore your favorites, and keep
                 discovering new culinary delights with MealMastermind!
             </span>
-            <div className='flex flex-wrap justify-center'>
-                {
-                    favoritesRecipes.map((recipe, index) => {
-                        return (
-                            <RecipeContainer key={index} username={username} recipe={recipe} favorites={favoritesId}/>
-                        )
-                    })
-                }
+            <div className="flex flex-wrap justify-center">
+                {favoritesRecipes.map((recipe, index) => {
+                    return (
+                        <RecipeContainer
+                            key={index}
+                            username={username}
+                            recipe={recipe}
+                            favorites={favoritesId}
+                        />
+                    );
+                })}
             </div>
         </div>
     );
