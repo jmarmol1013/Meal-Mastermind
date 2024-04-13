@@ -14,7 +14,7 @@ type Props = {
     username: string;
 };
 
-export const UserPreferences: React.FC<Props> = ({ username }) => {
+export const UserPreferencesComponent: React.FC<Props> = ({ username }) => {
     const router = useRouter();
     const [step, setStep] = useState<number>(1);
     const [userType, setUserType] = useState<User['type']>();
