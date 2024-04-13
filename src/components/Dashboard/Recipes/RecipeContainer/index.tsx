@@ -1,3 +1,4 @@
+import { RecipeModal } from '@components/RecipeModal';
 import { addFavoriteRecipe, deleteFavoriteRecipe } from '@services/profile';
 import { Recipe } from '@typesApp/recipes';
 import { User } from '@typesApp/user';
@@ -12,10 +13,19 @@ type Props = {
 
 export const RecipeContainer: React.FC<Props> = ({ username, recipe, favorites }) => {
     const [isFavorite, setIsFavorite] = useState<boolean>(false);
+    const [modalOpen, setModalOpen] = useState<boolean>(false);
 
     useEffect(() => {
         setIsFavorite(favorites!.includes(recipe._id));
     }, [favorites, recipe]);
+
+    const openModal = () => {
+        setModalOpen(true);
+    };
+
+    const closeModal = () => {
+        setModalOpen(false);
+    };
 
     const handlerFavorite = async () => {
         const newStatus = !isFavorite;
@@ -32,7 +42,10 @@ export const RecipeContainer: React.FC<Props> = ({ username, recipe, favorites }
     };
 
     return (
-        <div className="mt-12 justify-center rounded-md shadow-md hover:cursor-pointer lg:mx-[30%] lg:w-[40%]">
+        <div
+            className="mt-12 justify-center overflow-auto rounded-md shadow-md hover:cursor-pointer lg:mx-[30%] lg:w-[40%]"
+            onClick={openModal}
+        >
             <div className="flex flex-col">
                 <div className="h-2 w-full rounded-t-md bg-secondary"></div>
                 <div className="flex flex-col p-4">
@@ -51,6 +64,7 @@ export const RecipeContainer: React.FC<Props> = ({ username, recipe, favorites }
                     <span className="py-2">{recipe.description}</span>
                 </div>
             </div>
+            {modalOpen && <RecipeModal recipe={recipe} closeModal={closeModal} />}
         </div>
     );
 };

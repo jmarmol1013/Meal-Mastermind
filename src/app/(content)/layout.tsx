@@ -17,7 +17,7 @@ export default function RootLayout({
     return (
         <html lang="en">
             <body className={inter.className}>
-                <div className="lg:flex">
+                <div className="lg:flex lg:h-screen">
                     <NavBar />
                     {children}
                 </div>
