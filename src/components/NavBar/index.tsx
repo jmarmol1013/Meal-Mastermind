@@ -48,7 +48,7 @@ export const NavBar = () => {
         },
         {
             title: 'Preferences',
-            link: '/Preferences',
+            link: '/preferences',
             Icon: IoIosSettings,
         },
     ];
