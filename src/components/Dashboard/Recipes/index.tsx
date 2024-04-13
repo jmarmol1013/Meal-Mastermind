@@ -26,11 +26,13 @@ export const Recipes: React.FC<Props> = ({ username, recipes, favorites }) => {
     return (
         <div className="mt-8">
             <Calendar day={day} setDay={changeDay} />
-            <RecipeContainer
-                username={username}
-                recipe={recipes[numberRecipe]}
-                favorites={favorites}
-            />
+            <div className="flex justify-center">
+                <RecipeContainer
+                    username={username}
+                    recipe={recipes[numberRecipe]}
+                    favorites={favorites}
+                />
+            </div>
         </div>
     );
 };
