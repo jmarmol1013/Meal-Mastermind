@@ -159,3 +159,21 @@ export const deleteFavoriteRecipe = async (username: string, recipeId: ObjectId)
         return false;
     }
 };
+
+export const getFavoritesRecipes = async (username: string, session:string) => {
+    try {
+        const response = await serverSideFetchGet(
+            session,
+            `${process.env.NEXT_PUBLIC_API_GET_FAVORITES_RECIPES}/${username}`,
+            'no-cache',
+        );
+        if (!response) throw 'Error getting favorites recipes';
+
+        const resBody = (await response.json()) as unknown as APIResponse<Recipe[]>;
+        const recipes = resBody.data;
+
+        return recipes;
+    } catch (error) {
+        return null;
+    }
+}
