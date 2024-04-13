@@ -1,6 +1,8 @@
 import { APIResponse } from '@typesApp/api';
 import { Recipe } from '@typesApp/recipes';
 import { Cuisine, User } from '@typesApp/user';
+import { serverSideFetchGet } from './serverSide';
+import { UserPreferences } from '@typesApp/user-preferences';
 
 export const getRandomRecipes = async (cuisines: Cuisine[], userType: User['type']) => {
     try {
@@ -53,5 +55,23 @@ export const updatePreferences = async (
         return false;
     } catch (error) {
         return false;
+    }
+};
+
+export const getUserPreferences = async (username: string, session: string) => {
+    try {
+        const response = await serverSideFetchGet(
+            session,
+            `${process.env.NEXT_PUBLIC_API_GET_PREFERENCES}/${username}`,
+            'no-cache',
+        );
+        if (!response) throw 'Error getting user preferences';
+
+        const resBody = (await response.json()) as unknown as APIResponse<UserPreferences>;
+        const preferences = resBody.data;
+
+        return preferences;
+    } catch (error) {
+        return null;
     }
 };
