@@ -21,7 +21,7 @@
       "@components/*": ["./src/components/*"],
       "@utils/*": ["./src/utils/*"],
       "@hooks/*": ["./src/hooks/*"],
-      "@types/*": ["./src/types/*"],
+      "@typesApp/*": ["./src/types/*"],
       "@models/*": ["./src/models/*"],
       "@services/*": ["./src/services/*"],
       "@api/*": ["./src/app/api/*"],
