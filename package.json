@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "local": "next dev",
-    "dev": "NODE_ENV=dev next build",
-    "build": "NODE_ENV=prod next start",
+    "build": "next build",
+    "start": "next start",
     "lint": "next lint",
     "prettier": "prettier --write .",
     "test": "jest"
