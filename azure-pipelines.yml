@@ -58,6 +58,6 @@ stages:
 
           - script: |
               npm install --save-dev jest
-              npm run jest -- --coverage --coverageReporters="json-summary" --outputFile=coverage/coverage-summary.json
+              npm run test -- --coverage --coverageReporters="json-summary" --outputFile=coverage/coverage-summary.json
             displayName: 'Run Unit Tests and Generate Coverage Report'
             continueOnError: false
