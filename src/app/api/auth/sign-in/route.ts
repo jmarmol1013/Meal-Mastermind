@@ -8,6 +8,13 @@ export async function POST(request: NextRequest) {
     const reqBody = (await request.json()) as { idToken: string };
     const idToken = reqBody.idToken;
 
+    if (!idToken) {
+        return NextResponse.json<APIResponse<string>>({
+            statusCode: 400,
+            message: 'No ID token provided',
+        });
+    }
+
     const expiresIn = 60 * 60 * 24 * 5 * 1000; // 5 days
 
     const sessionCookie = await createSessionCookie(idToken, { expiresIn });
