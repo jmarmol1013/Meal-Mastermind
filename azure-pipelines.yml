@@ -1,0 +1,27 @@
+# Node.js with React
+# Build a Node.js project that uses React.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- main
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: Build
+    jobs:
+      - job: Build_and_Test
+        displayName: 'Build and Test'
+        steps:
+          - script: |
+              npm install
+              npm run build
+            displayName: 'Compile Project'
+
+          - script: |
+              npm install --save-dev jest
+              npm run jest -- --coverage --coverageReporters="json-summary" --outputFile=coverage/coverage-summary.json
+            displayName: 'Run Unit Tests and Generate Coverage Report'
+            continueOnError: false
