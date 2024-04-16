@@ -5,13 +5,16 @@ import { serverSideFetchGet } from './serverSide';
 
 export const registration = async (user: RegistrationFormDto) => {
     try {
-        const response = await fetch(process.env.NEXT_PUBLIC_API_REGISTRATION!, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API_REGISTRATION!}`,
+            {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ user }),
             },
-            body: JSON.stringify({ user }),
-        });
+        );
 
         const resBody = (await response.json()) as unknown as APIResponse<User>;
 
@@ -25,7 +28,9 @@ export const registration = async (user: RegistrationFormDto) => {
 
 export const validateUser = async (email: string) => {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_VALIDATE_USER!}/${email}`);
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API_VALIDATE_USER!}/${email}`,
+        );
         const resBody = (await response.json()) as unknown as APIResponse<User>;
 
         if (response.ok && resBody.statusCode == 200) {
@@ -40,7 +45,7 @@ export const validateUserPreferences = async (username: string, session: string)
     try {
         const response = await serverSideFetchGet(
             session,
-            `${process.env.NEXT_PUBLIC_API_VALIDATE_USER_PREFERENCES!}/${username}`,
+            `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API_VALIDATE_USER_PREFERENCES!}/${username}`,
             'default',
         );
         if (!response) throw 'Error';

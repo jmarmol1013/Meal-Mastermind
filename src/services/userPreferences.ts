@@ -6,7 +6,7 @@ import { UserPreferences } from '@typesApp/user-preferences';
 
 export const getRandomRecipes = async (cuisines: Cuisine[], userType: User['type']) => {
     try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_GET_RANDOM_RECIPES}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API_GET_RANDOM_RECIPES}`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -36,7 +36,7 @@ export const updatePreferences = async (
 ) => {
     try {
         const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_UPDATE_USER_PREFERENCES!}/${username}`,
+            `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API_UPDATE_USER_PREFERENCES!}/${username}`,
             {
                 method: 'PUT',
                 headers: {
@@ -62,7 +62,7 @@ export const getUserPreferences = async (username: string, session: string) => {
     try {
         const response = await serverSideFetchGet(
             session,
-            `${process.env.NEXT_PUBLIC_API_GET_PREFERENCES}/${username}`,
+            `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API_GET_PREFERENCES}/${username}`,
             'no-cache',
         );
         if (!response) throw 'Error getting user preferences';
