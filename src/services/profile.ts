@@ -12,7 +12,7 @@ export const getProfile = async (username: string, session: string) => {
 
         const response = await serverSideFetchGet(
             session,
-            `${process.env.NEXT_PUBLIC_API_GET_PROFILE}/${username}`,
+            `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API_GET_PROFILE}/${username}`,
             'no-cache',
         );
         if (!response) throw 'Error getting profile';
@@ -43,7 +43,7 @@ export const getRecipes = async (username: string, session: string) => {
     try {
         const response = await serverSideFetchGet(
             session,
-            `${process.env.NEXT_PUBLIC_API_GET_RECIPES}/${username}`,
+            `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API_GET_RECIPES}/${username}`,
             'no-cache',
         );
         if (!response) throw 'Error getting recipes';
@@ -63,7 +63,7 @@ export const updateRecipes = async (username: string, session: string) => {
     try {
         const response = await serverSideFetchGet(
             session,
-            `${process.env.NEXT_PUBLIC_API_UPDATE_RECIPES!}/${username}`,
+            `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API_UPDATE_RECIPES!}/${username}`,
             'no-cache',
         );
         if (!response) throw 'Error';
@@ -89,7 +89,7 @@ export const deleteUsedRecipes = async (
 
         const response = await serverSideFetchPost(
             session,
-            `${process.env.NEXT_PUBLIC_API_DELETE_USED_RECIPES}/${username}`,
+            `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API_DELETE_USED_RECIPES}/${username}`,
             'PUT',
             data,
             'no-cache',
@@ -111,13 +111,16 @@ export const addFavoriteRecipe = async (username: string, recipeId: ObjectId) =>
     try {
         const data: AddOneFavRecipe = { favorites: recipeId };
 
-        const response = await fetch(`${process.env.NEXT_PUBLIC_API_ADD_FAV_RECIPE}/${username}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json',
+        const response = await fetch(
+            `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API_ADD_FAV_RECIPE}/${username}`,
+            {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
             },
-            body: JSON.stringify(data),
-        });
+        );
 
         if (!response) throw 'error adding recipe';
 
@@ -137,7 +140,7 @@ export const deleteFavoriteRecipe = async (username: string, recipeId: ObjectId)
         const data: AddOneFavRecipe = { favorites: recipeId };
 
         const response = await fetch(
-            `${process.env.NEXT_PUBLIC_API_DELETE_FAV_RECIPE}/${username}`,
+            `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API_DELETE_FAV_RECIPE}/${username}`,
             {
                 method: 'DELETE',
                 headers: {
@@ -160,11 +163,11 @@ export const deleteFavoriteRecipe = async (username: string, recipeId: ObjectId)
     }
 };
 
-export const getFavoritesRecipes = async (username: string, session:string) => {
+export const getFavoritesRecipes = async (username: string, session: string) => {
     try {
         const response = await serverSideFetchGet(
             session,
-            `${process.env.NEXT_PUBLIC_API_GET_FAVORITES_RECIPES}/${username}`,
+            `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API_GET_FAVORITES_RECIPES}/${username}`,
             'no-cache',
         );
         if (!response) throw 'Error getting favorites recipes';
@@ -176,4 +179,4 @@ export const getFavoritesRecipes = async (username: string, session:string) => {
     } catch (error) {
         return null;
     }
-}
+};
