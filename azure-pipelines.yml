@@ -108,3 +108,65 @@ stages:
               NEXT_PUBLIC_API_GET_PREFERENCES: $(NEXT_PUBLIC_API_GET_PREFERENCES)
               NEXT_PUBLIC_API_SIGN_OUT: $(NEXT_PUBLIC_API_SIGN_OUT)
             displayName: 'Package Build Artifacts'
+
+  - stage: Deploy_to_Dev
+    jobs:
+      - job: Deploy
+        displayName: 'Deploy to Development'
+        steps:
+        - task: vercel-deployment-task@1
+          inputs:
+            vercelProjectId: $(VERCEL_PROJECT_ID)
+            vercelOrgId: $(VERCEL_ORG_ID)
+            vercelToken: $(VERCEL_TOKEN)
+          env:
+            VERCEL_TOKEN: $(VERCEL_TOKEN)
+            VERCEL_PROJECT_ID: $(VERCEL_PROJECT_ID)
+            VERCEL_ORG_ID: $(VERCEL_ORG_ID)
+
+
+  - stage: Deploy_to_QAT
+    jobs:
+      - job: Deploy
+        displayName: 'Deploy to QAT'
+        steps:
+        - task: vercel-deployment-task@1
+          inputs:
+            vercelProjectId: $(VERCEL_PROJECT_ID)
+            vercelOrgId: $(VERCEL_ORG_ID)
+            vercelToken: $(VERCEL_TOKEN)
+          env:
+            VERCEL_TOKEN: $(VERCEL_TOKEN)
+            VERCEL_PROJECT_ID: $(VERCEL_PROJECT_ID)
+            VERCEL_ORG_ID: $(VERCEL_ORG_ID)
+
+  - stage: Deploy_to_Staging
+    jobs:
+      - job: Deploy
+        displayName: 'Deploy to Staging'
+        steps:
+        - task: vercel-deployment-task@1
+          inputs:
+            vercelProjectId: $(VERCEL_PROJECT_ID)
+            vercelOrgId: $(VERCEL_ORG_ID)
+            vercelToken: $(VERCEL_TOKEN)
+          env:
+            VERCEL_TOKEN: $(VERCEL_TOKEN)
+            VERCEL_PROJECT_ID: $(VERCEL_PROJECT_ID)
+            VERCEL_ORG_ID: $(VERCEL_ORG_ID)
+
+  - stage: Deploy_to_Production
+    jobs:
+      - job: Deploy
+        displayName: 'Deploy to Production'
+        steps:
+        - task: vercel-deployment-task@1
+          inputs:
+            vercelProjectId: $(VERCEL_PROJECT_ID)
+            vercelOrgId: $(VERCEL_ORG_ID)
+            vercelToken: $(VERCEL_TOKEN)
+            production: true
+          env:
+            VERCEL_TOKEN: $(VERCEL_TOKEN)
+            VERCEL_PROJECT_ID: $(VERCEL_PROJECT_ID)
+            VERCEL_ORG_ID: $(VERCEL_ORG_ID)
