@@ -56,16 +56,8 @@ stages:
               NEXT_PUBLIC_API_SIGN_OUT: $(NEXT_PUBLIC_API_SIGN_OUT)
             displayName: 'Compile Project'
 
-          - task: SonarQubePrepare@5
-            inputs:
-              SonarQube: 'SonarQube'
-              scannerMode: 'CLI'
-              configMode: 'manual'
-              cliProjectKey: 'mealmastermind'
-              cliProjectName: 'MealMastermind'
-
-          - task: SonarQubeAnalyze@5
-
-          - task: SonarQubePublish@5
-            inputs:
-              pollingTimeoutSec: '300'
+          - script: |
+              npm install --save-dev jest
+              npm run jest -- --coverage --coverageReporters="json-summary" --outputFile=coverage/coverage-summary.json
+            displayName: 'Run Unit Tests and Generate Coverage Report'
+            continueOnError: false
