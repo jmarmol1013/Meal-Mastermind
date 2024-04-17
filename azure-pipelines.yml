@@ -119,6 +119,7 @@ stages:
             vercelProjectId: $(VERCEL_PROJECT_ID)
             vercelOrgId: $(VERCEL_ORG_ID)
             vercelToken: $(VERCEL_TOKEN)
+            debug: true
           env:
             VERCEL_TOKEN: $(VERCEL_TOKEN)
             VERCEL_PROJECT_ID: $(VERCEL_PROJECT_ID)
