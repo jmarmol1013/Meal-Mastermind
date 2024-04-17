@@ -1,0 +1,184 @@
+# Node.js with React
+# Build a Node.js project that uses React.
+# Add steps that analyze code, save build artifacts, deploy, and more:
+# https://docs.microsoft.com/azure/devops/pipelines/languages/javascript
+
+trigger:
+- main
+
+variables:
+  - group: MealMastermindEnv
+
+pool:
+  vmImage: ubuntu-latest
+
+stages:
+  - stage: Build
+    jobs:
+      - job: Build_and_Test
+        displayName: 'Build and Test'
+        steps:
+          - task: Npm@1
+            inputs:
+              command: 'install'
+            displayName: 'Install NPM'
+          - task: Npm@1
+            inputs:
+              command: 'custom'
+              customCommand: 'run build'
+            displayName: 'Compile Project'
+            env:
+              NEXT_PUBLIC_FIREBASE_API_KEY: $(NEXT_PUBLIC_FIREBASE_API_KEY)
+              NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: $(NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN)
+              NEXT_PUBLIC_FIREBASE_PROJECT_ID: $(NEXT_PUBLIC_FIREBASE_PROJECT_ID)
+              NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: $(NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET)
+              NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: $(NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID)
+              NEXT_PUBLIC_FIREBASE_APP_ID: $(NEXT_PUBLIC_FIREBASE_APP_ID)
+              NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: $(NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID)
+              FIREBASE_TYPE: $(FIREBASE_TYPE)
+              FIREBASE_PRIVATE_KEY_ID: $(FIREBASE_PRIVATE_KEY_ID)
+              FIREBASE_PRIVATE_KEY: $(FIREBASE_PRIVATE_KEY)
+              FIREBASE_CLIENT_EMAIL: $(FIREBASE_CLIENT_EMAIL)
+              FIREBASE_CLIENT_ID: $(FIREBASE_CLIENT_ID)
+              FIREBASE_AUTH_URI: $(FIREBASE_AUTH_URI)
+              FIREBASE_TOKEN_URI: $(FIREBASE_TOKEN_URI)
+              FIREBASE_AUTH_PROVIDER_X509_CERT_URL: $(FIREBASE_AUTH_PROVIDER_X509_CERT_URL)
+              FIREBASE_CLIENT_X509_CERT_URL: $(FIREBASE_CLIENT_X509_CERT_URL)
+              FIREBASE_UNIVERSE_DOMAIN: $(FIREBASE_UNIVERSE_DOMAIN)
+              MONGO_URI: $(MONGO_URI)
+              NEXT_PUBLIC_BASE_URL_LOCAL: ${NEXT_PUBLIC_BASE_URL_LOCAL}
+              NEXT_PUBLIC_BASE_URL_PROD=: ${NEXT_PUBLIC_BASE_URL_PROD_}
+              NEXT_PUBLIC_API_SIGNIN: $(NEXT_PUBLIC_API_SIGNIN)
+              NEXT_PUBLIC_API_SIGNUP: $(NEXT_PUBLIC_API_SIGNUP)
+              NEXT_PUBLIC_API_REGISTRATION: $(NEXT_PUBLIC_API_REGISTRATION)
+              NEXT_PUBLIC_API_VALIDATE_USER: $(NEXT_PUBLIC_API_VALIDATE_USER)
+              NEXT_PUBLIC_API_VALIDATE_USER_PREFERENCES: $(NEXT_PUBLIC_API_VALIDATE_USER_PREFERENCES)
+              NEXT_PUBLIC_API_UPDATE_USER_PREFERENCES: $(NEXT_PUBLIC_API_UPDATE_USER_PREFERENCES)
+              NEXT_PUBLIC_API_GET_RANDOM_RECIPES: $(NEXT_PUBLIC_API_GET_RANDOM_RECIPES)
+              NEXT_PUBLIC_API_UPDATE_RECIPES: $(NEXT_PUBLIC_API_UPDATE_RECIPES)
+              NEXT_PUBLIC_API_GET_SUGGEST_RECIPES: $(NEXT_PUBLIC_API_GET_SUGGEST_RECIPES)
+              NEXT_PUBLIC_API_GET_PROFILE: $(NEXT_PUBLIC_API_GET_PROFILE)
+              NEXT_PUBLIC_API_DELETE_USED_RECIPES: $(NEXT_PUBLIC_API_DELETE_USED_RECIPES)
+              NEXT_PUBLIC_API_GET_RECIPES: $(NEXT_PUBLIC_API_GET_RECIPES)
+              NEXT_PUBLIC_API_ADD_FAV_RECIPE: $(NEXT_PUBLIC_API_ADD_FAV_RECIPE)
+              NEXT_PUBLIC_API_DELETE_FAV_RECIPE: $(NEXT_PUBLIC_API_DELETE_FAV_RECIPE)
+              NEXT_PUBLIC_API_GET_FAVORITES_RECIPES: $(NEXT_PUBLIC_API_GET_FAVORITES_RECIPES)
+              NEXT_PUBLIC_API_GET_PREFERENCES: $(NEXT_PUBLIC_API_GET_PREFERENCES)
+              NEXT_PUBLIC_API_SIGN_OUT: $(NEXT_PUBLIC_API_SIGN_OUT)
+          - task: Npm@1
+            inputs:
+              command: 'custom'
+              customCommand: 'run test -- --coverage --coverageReporters="json-summary" --outputFile=coverage/coverage-summary.json'
+            displayName: 'Run Unit Tests and Generate Coverage Report'
+            continueOnError: false
+
+  - stage: Deliver
+    jobs:
+      - job: Package_Artifact
+        displayName: 'Package Artifact'
+        steps:
+          - script: |
+              npm install
+              npm run build
+              tar -czf build.tar.gz .next/
+            displayName: 'Package Build Artifacts'
+            env:
+              NEXT_PUBLIC_FIREBASE_API_KEY: $(NEXT_PUBLIC_FIREBASE_API_KEY)
+              NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN: $(NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN)
+              NEXT_PUBLIC_FIREBASE_PROJECT_ID: $(NEXT_PUBLIC_FIREBASE_PROJECT_ID)
+              NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET: $(NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET)
+              NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID: $(NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID)
+              NEXT_PUBLIC_FIREBASE_APP_ID: $(NEXT_PUBLIC_FIREBASE_APP_ID)
+              NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID: $(NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID)
+              FIREBASE_TYPE: $(FIREBASE_TYPE)
+              FIREBASE_PRIVATE_KEY_ID: $(FIREBASE_PRIVATE_KEY_ID)
+              FIREBASE_PRIVATE_KEY: $(FIREBASE_PRIVATE_KEY)
+              FIREBASE_CLIENT_EMAIL: $(FIREBASE_CLIENT_EMAIL)
+              FIREBASE_CLIENT_ID: $(FIREBASE_CLIENT_ID)
+              FIREBASE_AUTH_URI: $(FIREBASE_AUTH_URI)
+              FIREBASE_TOKEN_URI: $(FIREBASE_TOKEN_URI)
+              FIREBASE_AUTH_PROVIDER_X509_CERT_URL: $(FIREBASE_AUTH_PROVIDER_X509_CERT_URL)
+              FIREBASE_CLIENT_X509_CERT_URL: $(FIREBASE_CLIENT_X509_CERT_URL)
+              FIREBASE_UNIVERSE_DOMAIN: $(FIREBASE_UNIVERSE_DOMAIN)
+              MONGO_URI: $(MONGO_URI)
+              NEXT_PUBLIC_BASE_URL_LOCAL: ${NEXT_PUBLIC_BASE_URL_LOCAL}
+              NEXT_PUBLIC_BASE_URL_PROD=: ${NEXT_PUBLIC_BASE_URL_PROD_}
+              NEXT_PUBLIC_API_SIGNIN: $(NEXT_PUBLIC_API_SIGNIN)
+              NEXT_PUBLIC_API_SIGNUP: $(NEXT_PUBLIC_API_SIGNUP)
+              NEXT_PUBLIC_API_REGISTRATION: $(NEXT_PUBLIC_API_REGISTRATION)
+              NEXT_PUBLIC_API_VALIDATE_USER: $(NEXT_PUBLIC_API_VALIDATE_USER)
+              NEXT_PUBLIC_API_VALIDATE_USER_PREFERENCES: $(NEXT_PUBLIC_API_VALIDATE_USER_PREFERENCES)
+              NEXT_PUBLIC_API_UPDATE_USER_PREFERENCES: $(NEXT_PUBLIC_API_UPDATE_USER_PREFERENCES)
+              NEXT_PUBLIC_API_GET_RANDOM_RECIPES: $(NEXT_PUBLIC_API_GET_RANDOM_RECIPES)
+              NEXT_PUBLIC_API_UPDATE_RECIPES: $(NEXT_PUBLIC_API_UPDATE_RECIPES)
+              NEXT_PUBLIC_API_GET_SUGGEST_RECIPES: $(NEXT_PUBLIC_API_GET_SUGGEST_RECIPES)
+              NEXT_PUBLIC_API_GET_PROFILE: $(NEXT_PUBLIC_API_GET_PROFILE)
+              NEXT_PUBLIC_API_DELETE_USED_RECIPES: $(NEXT_PUBLIC_API_DELETE_USED_RECIPES)
+              NEXT_PUBLIC_API_GET_RECIPES: $(NEXT_PUBLIC_API_GET_RECIPES)
+              NEXT_PUBLIC_API_ADD_FAV_RECIPE: $(NEXT_PUBLIC_API_ADD_FAV_RECIPE)
+              NEXT_PUBLIC_API_DELETE_FAV_RECIPE: $(NEXT_PUBLIC_API_DELETE_FAV_RECIPE)
+              NEXT_PUBLIC_API_GET_FAVORITES_RECIPES: $(NEXT_PUBLIC_API_GET_FAVORITES_RECIPES)
+              NEXT_PUBLIC_API_GET_PREFERENCES: $(NEXT_PUBLIC_API_GET_PREFERENCES)
+              NEXT_PUBLIC_API_SIGN_OUT: $(NEXT_PUBLIC_API_SIGN_OUT)
+          - task: PublishBuildArtifacts@1
+            displayName: 'Publish Artifacts'
+            inputs:
+              PathtoPublish: 'build.tar.gz'
+              ArtifactName: 'build_artifacts'
+              publishLocation: 'Container'
+
+  - stage: Deploy_to_Dev
+    jobs:
+      - deployment: Deploy
+        displayName: 'Deploy to Development'
+        environment: 'development'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - script: |
+                    echo "Deploying to Development"
+                    echo "Deploy completed to DEV"
+                  displayName: 'Deploy Application'
+
+  - stage: Deploy_to_QAT
+    jobs:
+      - deployment: Deploy
+        displayName: 'Deploy to QAT'
+        environment: 'QAT'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - script: |
+                    echo "Deploying to QAT"
+                    echo "Deploy completed to QAT"
+                  displayName: 'Deploy Application'
+
+  - stage: Deploy_to_Staging
+    jobs:
+      - deployment: Deploy
+        displayName: 'Deploy to Staging'
+        environment: 'staging'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - script: |
+                    echo "Deploying to Stage"
+                    echo "Deploy completed to Stage"
+                  displayName: 'Deploy Application'
+
+  - stage: Deploy_to_Production
+    jobs:
+      - deployment: Deploy
+        displayName: 'Deploy to Production'
+        environment: 'production'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - script: |
+                    echo "Deploying to Production"
+                    echo "Deploy completed to Production"
+                  displayName: 'Deploy Application'
