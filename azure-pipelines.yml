@@ -114,59 +114,45 @@ stages:
       - job: Deploy
         displayName: 'Deploy to Development'
         steps:
-        - task: vercel-deployment-task@1
-          inputs:
-            vercelProjectId: $(VERCEL_PROJECT_ID)
-            vercelOrgId: $(VERCEL_ORG_ID)
-            vercelToken: $(VERCEL_TOKEN)
-          env:
-            VERCEL_TOKEN: $(VERCEL_TOKEN)
-            VERCEL_PROJECT_ID: $(VERCEL_PROJECT_ID)
-            VERCEL_ORG_ID: $(VERCEL_ORG_ID)
-
+          - script: |
+              npm install -g vercel
+              vercel --token $(VERCEL_TOKEN)
+            displayName: 'Deploy to Development Environment'
+            env:
+              VERCEL_TOKEN: $(VERCEL_TOKEN)
 
   - stage: Deploy_to_QAT
     jobs:
       - job: Deploy
         displayName: 'Deploy to QAT'
         steps:
-        - task: vercel-deployment-task@1
-          inputs:
-            vercelProjectId: $(VERCEL_PROJECT_ID)
-            vercelOrgId: $(VERCEL_ORG_ID)
-            vercelToken: $(VERCEL_TOKEN)
-          env:
-            VERCEL_TOKEN: $(VERCEL_TOKEN)
-            VERCEL_PROJECT_ID: $(VERCEL_PROJECT_ID)
-            VERCEL_ORG_ID: $(VERCEL_ORG_ID)
+          - script: |
+              npm install -g vercel
+              vercel --token $(VERCEL_TOKEN)
+            displayName: 'Deploy to QAT Environment'
+            env:
+              VERCEL_TOKEN: $(VERCEL_TOKEN)
 
   - stage: Deploy_to_Staging
     jobs:
       - job: Deploy
         displayName: 'Deploy to Staging'
         steps:
-        - task: vercel-deployment-task@1
-          inputs:
-            vercelProjectId: $(VERCEL_PROJECT_ID)
-            vercelOrgId: $(VERCEL_ORG_ID)
-            vercelToken: $(VERCEL_TOKEN)
-          env:
-            VERCEL_TOKEN: $(VERCEL_TOKEN)
-            VERCEL_PROJECT_ID: $(VERCEL_PROJECT_ID)
-            VERCEL_ORG_ID: $(VERCEL_ORG_ID)
+          - script: |
+              npm install -g vercel
+              vercel --token $(VERCEL_TOKEN)
+            displayName: 'Deploy to Staging Environment'
+            env:
+              VERCEL_TOKEN: $(VERCEL_TOKEN)
 
   - stage: Deploy_to_Production
     jobs:
       - job: Deploy
         displayName: 'Deploy to Production'
         steps:
-        - task: vercel-deployment-task@1
-          inputs:
-            vercelProjectId: $(VERCEL_PROJECT_ID)
-            vercelOrgId: $(VERCEL_ORG_ID)
-            vercelToken: $(VERCEL_TOKEN)
-            production: true
-          env:
-            VERCEL_TOKEN: $(VERCEL_TOKEN)
-            VERCEL_PROJECT_ID: $(VERCEL_PROJECT_ID)
-            VERCEL_ORG_ID: $(VERCEL_ORG_ID)
+          - script: |
+              npm install -g vercel
+              vercel --token $(VERCEL_TOKEN) --prod
+            displayName: 'Deploy to Production Environment'
+            env:
+              VERCEL_TOKEN: $(VERCEL_TOKEN)
