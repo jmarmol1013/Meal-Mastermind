@@ -31,7 +31,7 @@ export const StepTwo: React.FC<Props> = ({ cuisines, addCuisine }) => {
                 Mexican cuisine or the comforting warmth of Italian dishes, we&apos;ve got you
                 covered. Choose one or more cuisines that make your mouth water!
             </span>
-            <div className="mx-auto mt-16 flex flex-wrap justify-center md:mt-24 md:w-[80%] ">
+            <div className="mx-auto mt-16 flex flex-wrap justify-center md:mt-16 md:w-[80%] ">
                 <Card cuisines={cuisines} items={typeInformation} addCuisine={addCuisine} />
             </div>
         </div>
