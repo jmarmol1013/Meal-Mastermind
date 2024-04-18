@@ -33,7 +33,7 @@ describe('Update preferences for user', () => {
         const result = await updatePreferences(username, type, cuisines, favorites, allergies);
         expect(result).toBe(false);
         expect(fetchMock).toHaveBeenCalledWith(
-            `${process.env.NEXT_PUBLIC_API_UPDATE_USER_PREFERENCES!}/${username}`,
+            `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API_UPDATE_USER_PREFERENCES!}/${username}`,
             {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },

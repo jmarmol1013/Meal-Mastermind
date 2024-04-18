@@ -36,7 +36,7 @@ describe('Get recipes function', () => {
       expect(recipes).toEqual(null);
       expect(serverSideFetchGet).toHaveBeenCalledWith(
         session,
-        `${process.env.NEXT_PUBLIC_API_GET_RECIPES}/${username}`,
+        `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API_GET_RECIPES}/${username}`,
         'no-cache'
       );
     });

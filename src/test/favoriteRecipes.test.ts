@@ -31,7 +31,7 @@ describe('Add favorite recipe to user', () => {
         const result = await addFavoriteRecipe(username, recipeId);
         expect(result).toBe(true);
         expect(fetchMock).toHaveBeenCalledWith(
-            `${process.env.NEXT_PUBLIC_API_ADD_FAV_RECIPE}/${username}`,
+            `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API_ADD_FAV_RECIPE}/${username}`,
             expect.objectContaining({
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
@@ -84,7 +84,7 @@ describe('Delete favorite recipe to user', () => {
         const result = await deleteFavoriteRecipe(username, recipeId);
         expect(result).toBe(true);
         expect(fetchMock).toHaveBeenCalledWith(
-            `${process.env.NEXT_PUBLIC_API_ADD_FAV_RECIPE}/${username}`,
+            `${process.env.NEXT_PUBLIC_BASE_URL}/${process.env.NEXT_PUBLIC_API_ADD_FAV_RECIPE}/${username}`,
             expect.objectContaining({
                 method: 'DELETE',
                 headers: { 'Content-Type': 'application/json' },
