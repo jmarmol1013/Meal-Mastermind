@@ -1,4 +1,10 @@
 import React from 'react';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+    title: 'Authentication for MealMasterMind',
+    description: 'Authentication for MealMasterMind',
+};
 
 export default function AuthLayout({
     children,
