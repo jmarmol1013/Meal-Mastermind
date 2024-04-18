@@ -16,7 +16,7 @@ export default async function DashboardPage() {
 
     return (
         <div className="w-full">
-            <div className="m-6 lg:m-16">
+            <div className="m-6 lg:m-10">
                 <span className="py-2 text-xl text-gray-500">Here are your preferences!</span>
                 <h2 className="py-2 text-3xl">User Preferences</h2>
                 <span className="py-2 text-gray-500">

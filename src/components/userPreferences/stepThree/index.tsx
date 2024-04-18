@@ -37,7 +37,7 @@ export const StepThree: React.FC<Props> = ({ cuisines, favRecipes, userType, add
                 personalized recommendations that you&apos;ll love. Browse through the options below
                 and select the dishes that make your taste buds dance!
             </span>
-            <div className="mx-auto mt-6 flex flex-wrap justify-center md:mt-16 md:w-[90%] ">
+            <div className="mx-auto mt-6 flex flex-wrap justify-center md:mt-6 md:w-[90%] ">
                 {loading ? (
                     <span className="text-center text-xl text-primary">Loading ...</span>
                 ) : (

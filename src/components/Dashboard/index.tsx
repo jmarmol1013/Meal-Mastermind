@@ -40,7 +40,7 @@ export const DashboardComponent: React.FC<Props> = async ({
     }, 0);
 
     return (
-        <div className="m-10 lg:m-24">
+        <div className="m-10 lg:m-12">
             <div className="flex flex-col lg:flex-row">
                 <div className=" lg:w-[40%]">
                     <span className="py-4 text-xl text-gray-500">

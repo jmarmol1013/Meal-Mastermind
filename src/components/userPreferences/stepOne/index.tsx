@@ -44,7 +44,7 @@ export const StepOne: React.FC<Props> = ({ currentType, setUserType }) => {
                 culinary preferences. Don&apos;t worry, you can always update your preferences
                 later.
             </span>
-            <div className="mx-auto mt-10 flex flex-wrap justify-center md:mt-16 md:w-[80%] ">
+            <div className="mx-auto mt-10 flex flex-wrap justify-center md:mt-10 md:w-[80%] ">
                 <Card currentType={currentType} items={typeInformation} setUserType={setUserType} />
             </div>
         </div>

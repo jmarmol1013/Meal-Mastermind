@@ -31,7 +31,7 @@ export const StepFour: React.FC<Props> = ({ currentAllergies, addAllergie }) => 
                 allergies or dietary restrictions. Select any allergies from the list below to
                 ensure that we can provide you with safe and suitable recipe recommendations.
             </span>
-            <div className="mx-auto mt-16 flex flex-wrap justify-center md:mt-16 md:w-[80%] ">
+            <div className="mx-auto mt-16 flex flex-wrap justify-center md:mt-10 md:w-[80%] ">
                 <Card
                     allergies={allergieInfo}
                     currentAllergies={currentAllergies}
