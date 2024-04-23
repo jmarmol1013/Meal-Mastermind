@@ -1,4 +1,5 @@
 import React from 'react';
+import { Analytics } from "@vercel/analytics/react";
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
@@ -12,6 +13,7 @@ export default function AuthLayout({
     children: React.ReactNode;
 }>) {
     return (
+        <>
         <html lang="en">
             <body>
                 <div className=" m-auto  flex h-screen flex-row items-center justify-center bg-sky-600">
@@ -19,5 +21,7 @@ export default function AuthLayout({
                 </div>
             </body>
         </html>
+        <Analytics/>
+        </>
     );
 }
