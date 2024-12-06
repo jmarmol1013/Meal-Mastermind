@@ -1,6 +1,9 @@
+'use client';
+
 import { Recipe } from '@typesApp/recipes';
 import { User } from '@typesApp/user';
-import React from 'react';
+import { ObjectId } from 'mongoose';
+import React, { useState } from 'react';
 
 interface ListRecipesProps {
     recipes: Recipe[];
@@ -8,6 +11,13 @@ interface ListRecipesProps {
 }
 
 export const ListRecipes = ({ recipes }: ListRecipesProps) => {
+    const [recipeList, setRecipeList] = useState<Recipe[]>(recipes);
+
+    const handleDelete = (id: ObjectId) => {
+        const updatedRecipes = recipeList.filter((recipe) => recipe._id !== id);
+        setRecipeList(updatedRecipes);
+    };
+
     return (
         <div className="m-10 lg:m-12">
             <h2 className="py-4 text-3xl">Manage Recipes</h2>
@@ -28,14 +38,17 @@ export const ListRecipes = ({ recipes }: ListRecipesProps) => {
                         </tr>
                     </thead>
                     <tbody>
-                        {recipes.map((recipe) => (
+                        {recipeList.map((recipe) => (
                             <tr key={recipe._id.toString()} className="hover:bg-gray-50">
                                 <td className="  px-4 py-2">{recipe.title}</td>
                                 <td className="  px-4 py-2">{recipe.cuisine}</td>
                                 <td className="  px-4 py-2">{recipe.description}</td>
                                 <td className="  px-4 py-2">{recipe.type}</td>
                                 <td className="  px-4 py-2 text-center">
-                                    <button className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600">
+                                    <button
+                                        className="rounded bg-red-500 px-3 py-1 text-white hover:bg-red-600"
+                                        onClick={() => handleDelete(recipe._id)}
+                                    >
                                         Delete
                                     </button>
                                 </td>
