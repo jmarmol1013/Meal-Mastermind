@@ -7,10 +7,11 @@ import { NavBarList } from './NavBarList';
 import { GiCook } from 'react-icons/gi';
 import { IconType } from 'react-icons';
 import { FaHeart } from 'react-icons/fa';
-import { IoIosSettings } from 'react-icons/io';
+import { IoIosAdd, IoIosSettings } from 'react-icons/io';
 import { IoLogOut } from 'react-icons/io5';
 import { usePathname, useRouter } from 'next/navigation';
 import { signOut } from '@services/auth';
+import { MdLocalGroceryStore } from 'react-icons/md';
 
 export type NavItem = {
     title: string;
@@ -50,6 +51,16 @@ export const NavBar = () => {
             title: 'Preferences',
             link: '/preferences',
             Icon: IoIosSettings,
+        },
+        {
+            title: 'Manage Recipes',
+            link: '/manage',
+            Icon: IoIosAdd,
+        },
+        {
+            title: 'Grocery List',
+            link: '/list',
+            Icon: MdLocalGroceryStore,
         },
     ];
 
